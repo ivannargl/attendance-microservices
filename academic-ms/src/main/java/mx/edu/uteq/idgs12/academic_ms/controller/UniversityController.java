@@ -6,9 +6,12 @@ import java.util.Optional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import mx.edu.uteq.idgs12.academic_ms.dto.UniversityDTO;
 import mx.edu.uteq.idgs12.academic_ms.entity.University;
 import mx.edu.uteq.idgs12.academic_ms.service.UniversityService;
 
@@ -33,4 +36,10 @@ public class UniversityController {
         return university.map(ResponseEntity::ok)
         .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+   @PostMapping
+    public ResponseEntity<University> create(@RequestBody UniversityDTO dto) {
+        return ResponseEntity.ok(universityService.save(dto));
+    }
+
 }

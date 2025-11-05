@@ -1,15 +1,21 @@
 package mx.edu.uteq.idgs12.users_ms.controller;
 
+import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import mx.edu.uteq.idgs12.users_ms.dto.ChangePasswordDTO;
 import mx.edu.uteq.idgs12.users_ms.dto.UserLoginDTO;
 import mx.edu.uteq.idgs12.users_ms.dto.UserRegisterDTO;
 import mx.edu.uteq.idgs12.users_ms.dto.UserResponseDTO;
 import mx.edu.uteq.idgs12.users_ms.service.UserService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -55,6 +61,16 @@ public class UserController {
             return ResponseEntity.ok("User logged out successfully");
         } else {
             return ResponseEntity.status(403).body("Invalid refresh token");
+        }
+    }
+
+    @PutMapping("/{id}/change-password")
+    public ResponseEntity<?> changePassword(@PathVariable Integer id, @RequestBody ChangePasswordDTO dto) {
+        boolean changed = userService.changePassword(id, dto);
+        if (changed) {
+            return ResponseEntity.ok(Map.of("message", "Password updated successfully"));
+        } else {
+            return ResponseEntity.status(400).body(Map.of("error", "Invalid current password or user not found"));
         }
     }
 

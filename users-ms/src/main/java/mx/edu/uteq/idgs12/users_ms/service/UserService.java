@@ -1,22 +1,23 @@
 package mx.edu.uteq.idgs12.users_ms.service;
 
-import mx.edu.uteq.idgs12.users_ms.dto.UserLoginDTO;
-import mx.edu.uteq.idgs12.users_ms.dto.UserRegisterDTO;
-import mx.edu.uteq.idgs12.users_ms.dto.UserResponseDTO;
-import mx.edu.uteq.idgs12.users_ms.entity.User;
-import mx.edu.uteq.idgs12.users_ms.entity.RefreshToken;
-import mx.edu.uteq.idgs12.users_ms.repository.UserRepository;
-import mx.edu.uteq.idgs12.users_ms.security.JwtUtil;
-
-import org.springframework.beans.BeanUtils;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import mx.edu.uteq.idgs12.users_ms.dto.ChangePasswordDTO;
+import mx.edu.uteq.idgs12.users_ms.dto.UserLoginDTO;
+import mx.edu.uteq.idgs12.users_ms.dto.UserRegisterDTO;
+import mx.edu.uteq.idgs12.users_ms.dto.UserResponseDTO;
+import mx.edu.uteq.idgs12.users_ms.entity.RefreshToken;
+import mx.edu.uteq.idgs12.users_ms.entity.User;
+import mx.edu.uteq.idgs12.users_ms.repository.UserRepository;
+import mx.edu.uteq.idgs12.users_ms.security.JwtUtil;
 
 @Service
 public class UserService {
@@ -136,5 +137,18 @@ public class UserService {
         UserResponseDTO dto = new UserResponseDTO();
         BeanUtils.copyProperties(user, dto);
         return dto;
+    }
+
+        public boolean changePassword(Integer userId, ChangePasswordDTO dto) {
+        return userRepository.findById(userId).map(user -> {
+            // Verificar la contraseña actual
+            if (!passwordEncoder.matches(dto.getCurrentPassword(), user.getPassword())) {
+                return false;
+            }
+            // Guardar la nueva contraseña
+            user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+            userRepository.save(user);
+            return true;
+        }).orElse(false);
     }
 }

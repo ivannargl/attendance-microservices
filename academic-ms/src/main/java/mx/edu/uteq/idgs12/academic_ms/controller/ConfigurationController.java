@@ -20,4 +20,9 @@ public class ConfigurationController {
     public List<Configuration> getAll() {
         return configurationService.getAll();
     }
+
+    @GetMapping("/university/{idUniversity}")
+    public List<Configuration> getByUniversity(@PathVariable Integer idUniversity) {
+        return configurationService.getByUniversity(idUniversity);
+    }
 }

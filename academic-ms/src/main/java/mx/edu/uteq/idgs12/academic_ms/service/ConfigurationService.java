@@ -1,10 +1,11 @@
 package mx.edu.uteq.idgs12.academic_ms.service;
 
-import mx.edu.uteq.idgs12.academic_ms.entity.Configuration;
-import mx.edu.uteq.idgs12.academic_ms.repository.ConfigurationRepository;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import mx.edu.uteq.idgs12.academic_ms.entity.Configuration;
+import mx.edu.uteq.idgs12.academic_ms.repository.ConfigurationRepository;
 
 @Service
 public class ConfigurationService {
@@ -17,5 +18,9 @@ public class ConfigurationService {
 
     public List<Configuration> getAll() {
         return configurationRepository.findAll();
+    }
+
+    public List<Configuration> getByUniversity(Integer idUniversity) {
+        return configurationRepository.findByUniversity_IdUniversity(idUniversity);
     }
 }

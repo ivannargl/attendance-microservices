@@ -31,6 +31,11 @@ public class DivisionService {
                 .collect(Collectors.toList());
     }
 
+    public Optional<DivisionDTO> getById(Integer id) {
+        return divisionRepository.findById(id)
+                .map(this::toDTO);
+    }
+
     @Transactional
     public DivisionDTO save(DivisionDTO dto) {
         // Validar código único por universidad
@@ -49,6 +54,13 @@ public class DivisionService {
         Division division = toEntity(dto);
         Division saved = divisionRepository.save(division);
         return toDTO(saved);
+    }
+
+    @Transactional
+    public void delete(Integer id) {
+        Division division = divisionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Division not found with ID: " + id));
+        divisionRepository.delete(division);
     }
 
     private DivisionDTO toDTO(Division division) {

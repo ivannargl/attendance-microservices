@@ -1,6 +1,7 @@
 package mx.edu.uteq.idgs12.academic_ms.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import mx.edu.uteq.idgs12.academic_ms.dto.DivisionDTO;
 import mx.edu.uteq.idgs12.academic_ms.service.DivisionService;
@@ -28,6 +30,13 @@ public class DivisionController {
         return divisionService.getAll();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<DivisionDTO> getById(@PathVariable Integer id) {
+        Optional<DivisionDTO> division = divisionService.getById(id);
+        return division.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody DivisionDTO dto) {
         try {
@@ -36,6 +45,16 @@ public class DivisionController {
             return ResponseEntity.ok(updated);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+        try {
+            divisionService.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 }

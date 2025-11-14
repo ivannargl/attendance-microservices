@@ -29,6 +29,16 @@ public class DivisionController {
     public List<DivisionDTO> getAll() {
         return divisionService.getAll();
     }
+    
+    @GetMapping("/active")
+    public List<DivisionDTO> getAllActive() {
+        return divisionService.getAllActive();
+    }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<?> updateStatus(@PathVariable Integer id, @RequestParam Boolean status) {
+        try {
+            DivisionDTO updated = divisionService.updateStatus(id, status);
 
     @GetMapping("/{id}")
     public ResponseEntity<DivisionDTO> getById(@PathVariable Integer id) {

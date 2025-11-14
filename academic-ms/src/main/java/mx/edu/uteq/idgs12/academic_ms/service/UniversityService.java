@@ -5,10 +5,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import mx.edu.uteq.idgs12.academic_ms.dto.UniversityDTO;
 import mx.edu.uteq.idgs12.academic_ms.entity.University;
-
 import mx.edu.uteq.idgs12.academic_ms.repository.UniversityRepository;
 
 @Service

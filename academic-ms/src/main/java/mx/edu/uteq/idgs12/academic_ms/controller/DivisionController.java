@@ -1,14 +1,16 @@
 package mx.edu.uteq.idgs12.academic_ms.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import mx.edu.uteq.idgs12.academic_ms.dto.DivisionDTO;
 import mx.edu.uteq.idgs12.academic_ms.service.DivisionService;
@@ -18,7 +20,7 @@ import mx.edu.uteq.idgs12.academic_ms.service.DivisionService;
 public class DivisionController {
 
     private final DivisionService divisionService;
-    
+
     public DivisionController(DivisionService divisionService) {
         this.divisionService = divisionService;
     }
@@ -37,9 +39,32 @@ public class DivisionController {
     public ResponseEntity<?> updateStatus(@PathVariable Integer id, @RequestParam Boolean status) {
         try {
             DivisionDTO updated = divisionService.updateStatus(id, status);
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DivisionDTO> getById(@PathVariable Integer id) {
+        Optional<DivisionDTO> division = divisionService.getById(id);
+        return division.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody DivisionDTO dto) {
+        try {
+            dto.setIdDivision(id);
+            DivisionDTO updated = divisionService.save(dto);
             return ResponseEntity.ok(updated);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+        try {
+            divisionService.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 }

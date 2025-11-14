@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +40,12 @@ public class UniversityController {
 
    @PostMapping
     public ResponseEntity<University> create(@RequestBody UniversityDTO dto) {
+        return ResponseEntity.ok(universityService.save(dto));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<University> update(@PathVariable Integer id, @RequestBody UniversityDTO dto) {
+        dto.setIdUniversity(id);
         return ResponseEntity.ok(universityService.save(dto));
     }
 

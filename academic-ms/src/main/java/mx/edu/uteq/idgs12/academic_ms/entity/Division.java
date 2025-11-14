@@ -14,6 +14,7 @@ import lombok.Data;
 @Table(name = "division")
 @Data
 public class Division {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idDivision;
@@ -21,6 +22,9 @@ public class Division {
     @ManyToOne
     @JoinColumn(name = "idUniversity", nullable = false)
     private University university;
+
+    @Column(nullable = true)
+    private Integer idCoordinator;
 
     @Column(length = 20, nullable = false)
     private String code;

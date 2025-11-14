@@ -85,4 +85,5 @@ public class UserController {
         List<UserResponseDTO> users = userService.getUsersByUniversity(idUniversity);
         return ResponseEntity.ok(users);
     }
+    
 }

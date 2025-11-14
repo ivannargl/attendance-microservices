@@ -1,4 +1,5 @@
 package mx.edu.uteq.idgs12.academic_ms.dto;
+
 import lombok.Data;
 
 @Data

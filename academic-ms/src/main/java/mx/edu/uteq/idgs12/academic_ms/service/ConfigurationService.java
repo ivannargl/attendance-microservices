@@ -23,7 +23,7 @@ public class ConfigurationService {
     public Optional<Configuration> getById(Integer id) {
         return configurationRepository.findById(id);
     }
-}
+
     public List<Configuration> getByUniversity(Integer idUniversity) {
         return configurationRepository.findByUniversity_IdUniversity(idUniversity);
     }

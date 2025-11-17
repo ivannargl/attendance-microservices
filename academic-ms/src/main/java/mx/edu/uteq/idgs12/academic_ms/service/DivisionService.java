@@ -31,9 +31,23 @@ public class DivisionService {
                 .collect(Collectors.toList());
     }
 
+    public List<DivisionDTO> getAllActive() {
+        return divisionRepository.findByStatusTrue()
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
     public Optional<DivisionDTO> getById(Integer id) {
         return divisionRepository.findById(id)
                 .map(this::toDTO);
+    }
+
+    public List<DivisionDTO> getByUniversity(Integer idUniversity) {
+        return divisionRepository.findByUniversity_IdUniversity(idUniversity)
+            .stream()
+            .map(this::toDTO)
+            .collect(Collectors.toList());
     }
 
     @Transactional

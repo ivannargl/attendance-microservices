@@ -1,10 +1,18 @@
 package mx.edu.uteq.idgs12.academic_ms.controller;
 
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import mx.edu.uteq.idgs12.academic_ms.dto.ConfigurationDTO;
 import mx.edu.uteq.idgs12.academic_ms.entity.Configuration;
 import mx.edu.uteq.idgs12.academic_ms.service.ConfigurationService;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/configurations")
@@ -24,5 +32,11 @@ public class ConfigurationController {
     @GetMapping("/university/{idUniversity}")
     public List<Configuration> getByUniversity(@PathVariable Integer idUniversity) {
         return configurationService.getByUniversity(idUniversity);
+    }
+
+    
+    @PostMapping
+    public ResponseEntity<Configuration> create(@RequestBody ConfigurationDTO dto) {
+        return ResponseEntity.ok(configurationService.save(dto));
     }
 }
